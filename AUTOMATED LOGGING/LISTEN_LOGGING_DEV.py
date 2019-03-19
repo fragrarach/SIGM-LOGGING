@@ -1,5 +1,6 @@
 import smtplib
 import psycopg2.extensions
+import json
 import re
 import datetime
 import os
@@ -46,15 +47,18 @@ log_query = conn_log.cursor()
 CONSTANTS
 '''
 
-INC_TABLES = ['part',
-              'part_price',
-              'part_supplier',
-              'invoicing',
-              'bill_of_materials_mat',
-              'part_kit',
-              'contract',
-              'contract_group_line',
-              'contract_part_line']
+INC_TABLES = [
+    'order_header',
+    'part',
+    'part_price',
+    # 'part_supplier',
+    'invoicing'
+    # 'bill_of_materials_mat',
+    # 'part_kit',
+    # 'contract',
+    # 'contract_group_line',
+    # 'contract_part_line'
+    ]
 
 SNAP_TABLES = ['bill_of_materials_mat',
                'part_kit',
@@ -100,13 +104,55 @@ def table_names():
     return tables
 
 
-def drop_triggers():
+def table_columns(table):
+    sql_exp = f'SELECT * FROM table_columns(\'{table}\')'
+    result_set = production_query(sql_exp)
+    columns = tabular_data(result_set)
+    return columns
+
+
+def add_inc_triggers():
+    for table in INC_TABLES:
+        sql_exp = f'SELECT add_inc_log_tg_funcs(\'{table}\')'
+        sigm_query.execute(sql_exp)
+        print(f'{table} log trigger added.')
+
+
+def drop_inc_triggers():
     tables = table_names()
     for column in tables:
         for table in column:
             sql_exp = f'DROP TRIGGER IF EXISTS logging_notify on {table} CASCADE'
             sigm_query.execute(sql_exp)
             print(f'{table} log trigger dropped.')
+
+
+def add_inc_tables():
+    for table in INC_TABLES:
+        raw_columns = table_columns(table)
+        columns = []
+        for column in raw_columns:
+            pair = []
+            for cell in column:
+                pair.append(cell)
+            str_pair = ' '.join(pair)
+            columns.append(str_pair)
+        str_columns = ', '.join(columns)
+
+        sql_exp = f'CREATE TABLE IF NOT EXISTS {table}(' \
+                  f'time_stamp      TIMESTAMP WITHOUT TIME ZONE,' \
+                  f'user_name       TEXT,' \
+                  f'station         TEXT,' \
+                  f'{str_columns})'
+        log_query.execute(sql_exp)
+        print(f'{table} log table checked.')
+
+
+def drop_inc_tables():
+    for table in INC_TABLES:
+        sql_exp = f'DROP TABLE IF EXISTS {table} CASCADE'
+        log_query.execute(sql_exp)
+        print(f'{table} log table dropped.')
 
 
 def payload_handler(payload):
@@ -122,34 +168,25 @@ def payload_handler(payload):
 
     if user != 'SIGM':
         alert = payload.split(", ")[1]
-        alert_load = payload.split("{")[1][:-1]
-        timestamp = datetime.datetime.now()
+        alert_age = alert.split(" ", 1)[0]
+        alert_type = alert.split(" ", 1)[1]
+        alert_load = payload.split("[")[1][:-1]
+        alert_dict = json.loads(fr'{alert_load}')
 
+        timestamp = datetime.datetime.now()
         log_message = f'{alert} by {user} on workstation {station} at {timestamp}\n'
         print(log_message)
-        print(alert_load)
-        alert_handler(alert, user, timestamp, alert_load)
-        # log_handler(timestamp, alert, ref_type, ref, user, station)
 
-        # return alert, ref, user
+        return alert_type, alert_dict, user, timestamp
 
 
-def alert_handler(alert, user, timestamp, alert_load):
-    log_load = {}
-    if alert == 'RENAMED PART':
-        old_load = alert_load.split(', ')[0]
-        old_prt_no = old_load.split(':')[1]
-        new_load = alert_load.split(', ')[1]
-        new_prt_no = new_load.split(':')[1]
-        log_load['old_prt_no'] = old_prt_no
-        log_load['new_prt_no'] = new_prt_no
-        print(f'Part number {log_load.get("old_prt_no")} '
-              f'changed to {log_load.get("new_prt_no")} by {user} at {timestamp}')
-    elif alert == 'CHANGED SALE PRICE':
+# TODO: Write alert handler.
+def alert_handler(alert_type, alert_dict, user, timestamp):
+    if alert_type == 'PART NUMBER':
         pass
-    elif alert == 'CHANGED PURCHASE PRICE':
+    elif alert_type == 'PART PRICE':
         pass
-    elif alert == 'CHANGED CONTRACT':
+    elif alert_type == 'PACKING SLIP DATE':
         pass
 
 
@@ -159,16 +196,18 @@ def log_handler():
 
 
 def main():
+    # drop_inc_tables()
+    add_inc_triggers()
+    add_inc_tables()
     while 1:
         conn_sigm.poll()
         conn_sigm.commit()
         while conn_sigm.notifies:
-
             notify = conn_sigm.notifies.pop()
             raw_payload = notify.payload
-            print(raw_payload)
-            # alert, ref, user = payload_handler(raw_payload)
-            payload_handler(raw_payload)
+
+            alert_type, alert_dict, user, timestamp = payload_handler(raw_payload)
+            alert_handler(alert_type, alert_dict, user, timestamp)
 
 
 main()
