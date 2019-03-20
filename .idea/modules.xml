@@ -2,6 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/../AUTO-FOLDERS/.idea/AUTO-FOLDERS.iml" filepath="$PROJECT_DIR$/../AUTO-FOLDERS/.idea/AUTO-FOLDERS.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../AUTO-LABELS/.idea/AUTO-LABELS.iml" filepath="$PROJECT_DIR$/../AUTO-LABELS/.idea/AUTO-LABELS.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../DAILY-ORDERS/.idea/DAILY-ORDERS.iml" filepath="$PROJECT_DIR$/../DAILY-ORDERS/.idea/DAILY-ORDERS.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../ORDER-ALERTS/.idea/ORDER-ALERTS.iml" filepath="$PROJECT_DIR$/../ORDER-ALERTS/.idea/ORDER-ALERTS.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/SIGM-LOGGING.iml" filepath="$PROJECT_DIR$/.idea/SIGM-LOGGING.iml" />
     </modules>
   </component>
