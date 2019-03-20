@@ -37,7 +37,10 @@ sigm_listen = conn_sigm.cursor()
 sigm_listen.execute("LISTEN logging;")
 sigm_query = conn_sigm.cursor()
 
-conn_log = psycopg2.connect("host='192.168.0.57' dbname='LOG' user='SIGM' port='5493'")
+if dev_check():
+    conn_log = psycopg2.connect("host='192.168.0.57' dbname='LOG' user='SIGM' port='5493'")
+else:
+    conn_log = psycopg2.connect("host='192.168.0.250' dbname='LOG' user='SIGM' port='5493'")
 conn_log.set_client_encoding("latin1")
 conn_log.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT)
 
@@ -49,6 +52,7 @@ CONSTANTS
 
 INC_TABLES = [
     'order_header',
+    'order_line',
     'part',
     'part_price',
     # 'part_supplier',
@@ -143,6 +147,7 @@ def add_inc_tables():
                   f'time_stamp      TIMESTAMP WITHOUT TIME ZONE,' \
                   f'user_name       TEXT,' \
                   f'station         TEXT,' \
+                  f'age             TEXT,' \
                   f'{str_columns})'
         log_query.execute(sql_exp)
         print(f'{table} log table checked.')
@@ -167,32 +172,45 @@ def payload_handler(payload):
         station = 'fileserver'
 
     if user != 'SIGM':
-        alert = payload.split(", ")[1]
-        alert_age = alert.split(" ", 1)[0]
-        alert_type = alert.split(" ", 1)[1]
+        alert_age = payload.split(", ")[1]
+        alert_table = payload.split(", ")[2]
         alert_load = payload.split("[")[1][:-1]
         alert_dict = json.loads(fr'{alert_load}')
 
         timestamp = datetime.datetime.now()
-        log_message = f'{alert} by {user} on workstation {station} at {timestamp}\n'
+        log_message = f'{alert_age} {alert_table} by {user} on workstation {station} at {timestamp}\n'
         print(log_message)
 
-        return alert_type, alert_dict, user, timestamp
+        return alert_table, alert_dict, timestamp, user, station, alert_age
 
 
-# TODO: Write alert handler.
-def alert_handler(alert_type, alert_dict, user, timestamp):
-    if alert_type == 'PART NUMBER':
-        pass
-    elif alert_type == 'PART PRICE':
-        pass
-    elif alert_type == 'PACKING SLIP DATE':
-        pass
+def alert_handler(alert_dict):
+    columns = []
+    for key in alert_dict:
+        columns.append(key)
+    str_columns = ', '.join(columns)
+
+    values = []
+    for value in alert_dict.values():
+        if value is None:
+            value = 'Null'
+        if type(value) == datetime.date:
+            value = f'\'{value}\'::DATE'
+        if type(value) != str:
+            value = str(value)
+        else:
+            if value != 'Null':
+                value = "'" + value + "'"
+        values.append(value)
+    str_values = ', '.join(values)
+
+    return str_columns, str_values
 
 
-# TODO: Write log handler.
-def log_handler():
-    pass
+def log_handler(alert_table, str_columns, timestamp, user, station, alert_age, str_values):
+    sql_exp = f"INSERT INTO {alert_table} (time_stamp, user_name, station, age, {str_columns}) " \
+              f"VALUES ('{timestamp}', '{user}', '{station}', '{alert_age}', {str_values})"
+    log_query.execute(sql_exp)
 
 
 def main():
@@ -206,8 +224,9 @@ def main():
             notify = conn_sigm.notifies.pop()
             raw_payload = notify.payload
 
-            alert_type, alert_dict, user, timestamp = payload_handler(raw_payload)
-            alert_handler(alert_type, alert_dict, user, timestamp)
+            alert_table, alert_dict, timestamp, user, station, alert_age = payload_handler(raw_payload)
+            str_columns, str_values = alert_handler(alert_dict)
+            log_handler(alert_table, str_columns, timestamp, user, station, alert_age, str_values)
 
 
 main()

@@ -218,13 +218,40 @@ IF tg_table_name = 'order_header' THEN
             old_payload := (
                 ''
                 || sigm_str || ', '
-                || 'OLD ORDER HEADER' || ', '
+                || 'OLD' || ', '
+                || tg_table_name || ', '
                 || '[' || row_to_json(OLD) || ']'
             );
             new_payload := (
                 ''
                 || sigm_str || ', '
-                || 'NEW ORDER HEADER' || ', '
+                || 'NEW' || ', '
+                || tg_table_name || ', '
+                || '[' || row_to_json(NEW) || ']'
+            );
+        END IF;
+    END IF;
+
+ELSIF tg_table_name = 'order_line' THEN
+
+    IF
+        tg_op = 'UPDATE'
+    THEN
+        IF
+            OLD <> NEW
+        THEN
+            old_payload := (
+                ''
+                || sigm_str || ', '
+                || 'OLD' || ', '
+                || tg_table_name || ', '
+                || '[' || row_to_json(OLD) || ']'
+            );
+             new_payload := (
+                ''
+                || sigm_str || ', '
+                || 'NEW' || ', '
+                || tg_table_name || ', '
                 || '[' || row_to_json(NEW) || ']'
             );
         END IF;
@@ -236,18 +263,20 @@ ELSIF tg_table_name = 'part' THEN
         tg_op = 'UPDATE'
     THEN
         IF
-            OLD.prt_no <> NEW.prt_no
+            OLD <> NEW
         THEN
             old_payload := (
                 ''
                 || sigm_str || ', '
-                || 'OLD PART NUMBER' || ', '
+                || 'OLD' || ', '
+                || tg_table_name || ', '
                 || '[' || row_to_json(OLD) || ']'
             );
              new_payload := (
                 ''
                 || sigm_str || ', '
-                || 'NEW PART NUMBER' || ', '
+                || 'NEW' || ', '
+                || tg_table_name || ', '
                 || '[' || row_to_json(NEW) || ']'
             );
         END IF;
@@ -259,18 +288,20 @@ ELSIF tg_table_name = 'part_price' THEN
         tg_op = 'UPDATE'
     THEN
         IF
-            OLD.ppr_price <> NEW.ppr_price
+            OLD <> NEW
         THEN
             old_payload := (
                 ''
                 || sigm_str || ', '
-                || 'OLD PART PRICE' || ', '
+                || 'OLD' || ', '
+                || tg_table_name || ', '
                 || '[' || row_to_json(OLD) || ']'
             );
              new_payload := (
                 ''
                 || sigm_str || ', '
-                || 'NEW PART PRICE' || ', '
+                || 'NEW' || ', '
+                || tg_table_name || ', '
                 || '[' || row_to_json(NEW) || ']'
             );
         END IF;
@@ -303,19 +334,20 @@ ELSIF tg_table_name = 'invoicing' THEN
         tg_op = 'UPDATE'
     THEN
         IF
-            OLD.inv_no = 0
-            AND NEW.inv_no <> 0
+            OLD <> NEW
         THEN
             old_payload := (
                 ''
                 || sigm_str || ', '
-                || 'OLD PACKING SLIP DATE' || ', '
+                || 'OLD' || ', '
+                || tg_table_name || ', '
                 || '[' || row_to_json(OLD) || ']'
             );
              new_payload := (
                 ''
                 || sigm_str || ', '
-                || 'NEW PACKING SLIP DATE' || ', '
+                || 'NEW' || ', '
+                || tg_table_name || ', '
                 || '[' || row_to_json(NEW) || ']'
             );
         END IF;
@@ -346,7 +378,6 @@ IF old_payload <> '' THEN
             || sigm_str || ', '
             || tg_table_name || ', '
             || tg_op || ''
-
         );
 
     END IF;
@@ -365,7 +396,6 @@ IF new_payload <> '' THEN
             || sigm_str || ', '
             || tg_table_name || ', '
             || tg_op || ''
-
         );
 
     END IF;
