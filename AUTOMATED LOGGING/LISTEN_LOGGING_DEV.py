@@ -1,62 +1,14 @@
-import smtplib
 import psycopg2.extensions
 import json
 import re
 import datetime
-import os
-from os.path import dirname, abspath
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
-
+from sigm import sigm_conn, log_conn, add_sql_files
 
 # PostgreSQL DB connection configs
 psycopg2.extensions.register_type(psycopg2.extensions.UNICODE)
 psycopg2.extensions.register_type(psycopg2.extensions.UNICODEARRAY)
 
-
-# Check whether app should reference dev or prod server/db
-def dev_check():
-    raw_filename = os.path.basename(__file__)
-    removed_extension = raw_filename.split('.')[0]
-    last_word = removed_extension.split('_')[-1]
-    if last_word == 'DEV':
-        return True
-    else:
-        return False
-
-
-# Initialize production DB connection, listen cursor and query cursor
-def sigm_conn():
-    global conn_sigm, sigm_query
-    if dev_check():
-        conn_sigm = psycopg2.connect("host='192.168.0.57' dbname='DEV' user='SIGM' port='5493'")
-    else:
-        conn_sigm = psycopg2.connect("host='192.168.0.250' dbname='QuatroAir' user='SIGM' port='5493'")
-    conn_sigm.set_client_encoding("latin1")
-    conn_sigm.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT)
-
-    sigm_listen = conn_sigm.cursor()
-    sigm_listen.execute("LISTEN logging;")
-    sigm_query = conn_sigm.cursor()
-
-    return conn_sigm, sigm_query
-
-
-# Initialize log DB connection, listen cursor and query cursor
-def log_conn():
-    global conn_log, log_query
-    if dev_check():
-        conn_log = psycopg2.connect("host='192.168.0.57' dbname='LOG' user='SIGM' port='5493'")
-    else:
-        conn_log = psycopg2.connect("host='192.168.0.250' dbname='LOG' user='SIGM' port='5493'")
-    conn_log.set_client_encoding("latin1")
-    conn_log.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT)
-
-    log_query = conn_log.cursor()
-
-    return conn_log, log_query
-
-
+# Incremental log tables
 INC_TABLES = [
     'order_header',
     'order_line',
@@ -71,6 +23,8 @@ INC_TABLES = [
     # 'contract_part_line'
     ]
 
+# TODO : Implement snapshot logging
+# Snapshot log tables
 SNAP_TABLES = ['bill_of_materials_mat',
                'part_kit',
                'contract',
@@ -78,6 +32,7 @@ SNAP_TABLES = ['bill_of_materials_mat',
                'contract_part_line']
 
 
+# Convert tabular query result to list (2D array)
 def tabular_data(result_set):
     lines = []
     for row in result_set:
@@ -90,6 +45,7 @@ def tabular_data(result_set):
     return lines
 
 
+# Convert scalar query result to singleton variable of any data type
 def scalar_data(result_set):
     for row in result_set:
         for cell in row:
@@ -98,12 +54,14 @@ def scalar_data(result_set):
             return cell
 
 
+# Query production database
 def production_query(sql_exp):
     sigm_query.execute(sql_exp)
     result_set = sigm_query.fetchall()
     return result_set
 
 
+# Call table_names() PL/PG function, pull all table names from public schema
 def table_names():
     sql_exp = f'SELECT * FROM table_names()'
     result_set = production_query(sql_exp)
@@ -111,6 +69,7 @@ def table_names():
     return tables
 
 
+# Call table_columns() PL/PG function, pull all column names/attribute names/attribute numbers of a table
 def table_columns(table):
     sql_exp = f'SELECT * FROM table_columns(\'{table}\')'
     result_set = production_query(sql_exp)
@@ -118,13 +77,20 @@ def table_columns(table):
     return columns
 
 
+# Add incremental log triggers to all tables in INC_TABLES list
 def add_inc_triggers():
     for table in INC_TABLES:
-        sql_exp = f'SELECT add_inc_log_tg_funcs(\'{table}\')'
+        sql_exp = f'DROP TRIGGER IF EXISTS logging_notify ON {table}; ' \
+                  f'CREATE TRIGGER logging_notify ' \
+                  f'    AFTER UPDATE OR INSERT OR DELETE ' \
+                  f'    ON {table} ' \
+                  f'    FOR EACH ROW ' \
+                  f'    EXECUTE PROCEDURE logging_notify()'
         sigm_query.execute(sql_exp)
         print(f'{table} log trigger added.')
 
 
+# Drop incremental log triggers from all tables in INC_TABLES list
 def drop_inc_triggers():
     tables = table_names()
     for column in tables:
@@ -134,6 +100,7 @@ def drop_inc_triggers():
             print(f'{table} log trigger dropped.')
 
 
+# Create incremental log tables on LOG DB for every table in INC_TABLES list
 def add_inc_tables():
     for table in INC_TABLES:
         raw_columns = table_columns(table)
@@ -156,6 +123,7 @@ def add_inc_tables():
         print(f'{table} log table checked.')
 
 
+# Drop incremental log tables on LOG DB for every table in INC_TABLES list
 def drop_inc_tables():
     for table in INC_TABLES:
         sql_exp = f'DROP TABLE IF EXISTS {table} CASCADE'
@@ -163,6 +131,7 @@ def drop_inc_tables():
         print(f'{table} log table dropped.')
 
 
+# Split payload string, return named variables
 def payload_handler(payload):
     sigm_string = payload.split(", ")[0]
 
@@ -187,6 +156,7 @@ def payload_handler(payload):
         return alert_table, alert_dict, timestamp, user, station, alert_age
 
 
+# Generate string of column names and values to be insert into log table
 def alert_handler(alert_dict):
     columns = []
     for key in alert_dict:
@@ -203,6 +173,9 @@ def alert_handler(alert_dict):
             value = str(value)
         else:
             if value != 'Null':
+                if "'" in value:
+                    value = value.replace("'", "''")
+                    print(value)
                 value = "'" + value + "'"
         values.append(value)
     str_values = ', '.join(values)
@@ -210,20 +183,24 @@ def alert_handler(alert_dict):
     return str_columns, str_values
 
 
+# Insert named variables returned by payload handler and payload generated by alert_handler into log table
 def log_handler(alert_table, str_columns, timestamp, user, station, alert_age, str_values):
-    sql_exp = f"INSERT INTO {alert_table} (time_stamp, user_name, station, age, {str_columns}) " \
-              f"VALUES ('{timestamp}', '{user}', '{station}', '{alert_age}', {str_values})"
+    sql_exp = fr"INSERT INTO {alert_table} (time_stamp, user_name, station, age, {str_columns}) " \
+              fr"VALUES ('{timestamp}', '{user}', '{station}', '{alert_age}', {str_values})"
     log_query.execute(sql_exp)
 
 
 def main():
+    channel = 'logging'
     global conn_sigm, sigm_query, conn_log, log_query
-    conn_sigm, sigm_query = sigm_conn()
+    conn_sigm, sigm_query = sigm_conn(channel)
     conn_log, log_query = log_conn()
 
+    add_sql_files()
     # drop_inc_tables()
     add_inc_triggers()
     add_inc_tables()
+
     while 1:
         try:
             conn_sigm.poll()
