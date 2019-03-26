@@ -207,7 +207,7 @@ def main():
             print('Database cannot be accessed, PostgreSQL service probably rebooting')
             try:
                 conn_sigm.close()
-                conn_sigm, sigm_query = sigm_conn()
+                conn_sigm, sigm_query = sigm_conn(channel)
                 conn_log.close()
                 conn_log, log_query = log_conn()
             except:
