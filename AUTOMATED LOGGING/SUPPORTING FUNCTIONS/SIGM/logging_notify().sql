@@ -18,11 +18,14 @@ sigm_str := (
     )
 );
 
-IF tg_table_name = 'order_header' THEN
+IF
+    tg_op = 'UPDATE'
+THEN
 
     IF
-        tg_op = 'UPDATE'
+        tg_table_name = 'order_header'
     THEN
+
         IF
             NEW.prj_no IS NULL AND
             NEW.ord_id <> OLD.ord_id OR
@@ -220,6 +223,7 @@ IF tg_table_name = 'order_header' THEN
                 || sigm_str || ', '
                 || 'OLD' || ', '
                 || tg_table_name || ', '
+                || tg_op || ', '
                 || '[' || row_to_json(OLD) || ']'
             );
             new_payload := (
@@ -227,16 +231,13 @@ IF tg_table_name = 'order_header' THEN
                 || sigm_str || ', '
                 || 'NEW' || ', '
                 || tg_table_name || ', '
+                || tg_op || ', '
                 || '[' || row_to_json(NEW) || ']'
             );
         END IF;
-    END IF;
 
-ELSIF tg_table_name = 'order_line' THEN
+    ELSE
 
-    IF
-        tg_op = 'UPDATE'
-    THEN
         IF
             OLD <> NEW
         THEN
@@ -245,6 +246,7 @@ ELSIF tg_table_name = 'order_line' THEN
                 || sigm_str || ', '
                 || 'OLD' || ', '
                 || tg_table_name || ', '
+                || tg_op || ', '
                 || '[' || row_to_json(OLD) || ']'
             );
              new_payload := (
@@ -252,117 +254,23 @@ ELSIF tg_table_name = 'order_line' THEN
                 || sigm_str || ', '
                 || 'NEW' || ', '
                 || tg_table_name || ', '
+                || tg_op || ', '
                 || '[' || row_to_json(NEW) || ']'
             );
         END IF;
     END IF;
 
-ELSIF tg_table_name = 'part' THEN
-
-    IF
-        tg_op = 'UPDATE'
-    THEN
-        IF
-            OLD <> NEW
-        THEN
-            old_payload := (
-                ''
-                || sigm_str || ', '
-                || 'OLD' || ', '
-                || tg_table_name || ', '
-                || '[' || row_to_json(OLD) || ']'
-            );
-             new_payload := (
-                ''
-                || sigm_str || ', '
-                || 'NEW' || ', '
-                || tg_table_name || ', '
-                || '[' || row_to_json(NEW) || ']'
-            );
-        END IF;
-    END IF;
-
-ELSIF tg_table_name = 'part_price' THEN
-
-    IF
-        tg_op = 'UPDATE'
-    THEN
-        IF
-            OLD <> NEW
-        THEN
-            old_payload := (
-                ''
-                || sigm_str || ', '
-                || 'OLD' || ', '
-                || tg_table_name || ', '
-                || '[' || row_to_json(OLD) || ']'
-            );
-             new_payload := (
-                ''
-                || sigm_str || ', '
-                || 'NEW' || ', '
-                || tg_table_name || ', '
-                || '[' || row_to_json(NEW) || ']'
-            );
-        END IF;
-    END IF;
-
--- ELSIF tg_table_name = 'part_supplier' THEN
---
---     IF
---         tg_op = 'INSERT'
---     THEN
---         -- IF
---             -- OLD.psp_price <> NEW.psp_price
---         -- THEN
---             old_payload := (
---                 ''
---                 || 'OLD PART COST' || ', '
---                 || row_to_json(OLD)
---             );
---              new_payload := (
---                 ''
---                 || 'NEW PART COST' || ', '
---                 || row_to_json(NEW)
---             );
---         -- END IF;
---     END IF;
-
-ELSIF tg_table_name = 'invoicing' THEN
-
-    IF
-        tg_op = 'UPDATE'
-    THEN
-        IF
-            OLD <> NEW
-        THEN
-            old_payload := (
-                ''
-                || sigm_str || ', '
-                || 'OLD' || ', '
-                || tg_table_name || ', '
-                || '[' || row_to_json(OLD) || ']'
-            );
-             new_payload := (
-                ''
-                || sigm_str || ', '
-                || 'NEW' || ', '
-                || tg_table_name || ', '
-                || '[' || row_to_json(NEW) || ']'
-            );
-        END IF;
-    END IF;
-
--- ELSIF tg_table_name = 'bill_of_materials_mat' THEN
-
--- ELSIF tg_table_name = 'part_kit' THEN
-
--- ELSIF tg_table_name = 'contract' THEN
-
--- ELSIF tg_table_name = 'contract_group_line' THEN
-
--- ELSIF tg_table_name = 'contract_part_line' THEN
-
+ELSIF
+    tg_op = 'INSERT'
+THEN
+        new_payload := (
+            ''
+            || sigm_str || ', '
+            || 'NEW' || ', '
+            || tg_table_name || ', '
+            || tg_op || ', '
+            || '[' || row_to_json(NEW) || ']'
+        );
 END IF;
 
 IF old_payload <> '' THEN
