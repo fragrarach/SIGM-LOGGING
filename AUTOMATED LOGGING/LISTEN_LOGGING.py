@@ -1,8 +1,7 @@
-import psycopg2.extensions
 import json
 import re
 import datetime
-from sigm import sigm_conn, log_conn, add_sql_files
+from sigm import *
 
 # PostgreSQL DB connection configs
 psycopg2.extensions.register_type(psycopg2.extensions.UNICODE)
@@ -55,16 +54,16 @@ def scalar_data(result_set):
 
 
 # Query production database
-def production_query(sql_exp):
-    sigm_query.execute(sql_exp)
-    result_set = sigm_query.fetchall()
+def sigm_db_query(sql_exp):
+    sigm_db_cursor.execute(sql_exp)
+    result_set = sigm_db_cursor.fetchall()
     return result_set
 
 
 # Call table_names() PL/PG function, pull all table names from public schema
 def table_names():
     sql_exp = f'SELECT * FROM table_names()'
-    result_set = production_query(sql_exp)
+    result_set = sigm_db_query(sql_exp)
     tables = tabular_data(result_set)
     return tables
 
@@ -72,7 +71,7 @@ def table_names():
 # Call table_columns() PL/PG function, pull all column names/attribute names/attribute numbers of a table
 def table_columns(table):
     sql_exp = f'SELECT * FROM table_columns(\'{table}\')'
-    result_set = production_query(sql_exp)
+    result_set = sigm_db_query(sql_exp)
     columns = tabular_data(result_set)
     return columns
 
@@ -86,7 +85,7 @@ def add_inc_triggers():
                   f'    ON {table} ' \
                   f'    FOR EACH ROW ' \
                   f'    EXECUTE PROCEDURE logging_notify()'
-        sigm_query.execute(sql_exp)
+        sigm_db_cursor.execute(sql_exp)
         print(f'{table} log trigger added.')
 
 
@@ -96,7 +95,7 @@ def drop_inc_triggers():
     for column in tables:
         for table in column:
             sql_exp = f'DROP TRIGGER IF EXISTS logging_notify on {table} CASCADE'
-            sigm_query.execute(sql_exp)
+            sigm_db_cursor.execute(sql_exp)
             print(f'{table} log trigger dropped.')
 
 
@@ -119,13 +118,13 @@ def add_inc_tables():
                   f'station         TEXT,' \
                   f'age             TEXT,' \
                   f'{str_columns})'
-        log_query.execute(sql_exp)
+        log_db_cursor.execute(sql_exp)
         print(f'{table} log table checked.')
 
         try:
             sql_exp = f'ALTER TABLE IF EXISTS {table} ' \
                       f'ADD COLUMN tg_op TEXT;'
-            log_query.execute(sql_exp)
+            log_db_cursor.execute(sql_exp)
             print(f'{table} new column(s) added.')
         except:
             print(f'{table} new column(s) already exist.')
@@ -135,7 +134,7 @@ def add_inc_tables():
 def drop_inc_tables():
     for table in INC_TABLES:
         sql_exp = f'DROP TABLE IF EXISTS {table} CASCADE'
-        log_query.execute(sql_exp)
+        log_db_cursor.execute(sql_exp)
         print(f'{table} log table dropped.')
 
 
@@ -196,14 +195,14 @@ def alert_handler(alert_dict):
 def log_handler(alert_table, str_columns, timestamp, user, station, alert_age, alert_tg_op, str_values):
     sql_exp = fr"INSERT INTO {alert_table} (tg_op, time_stamp, user_name, station, age, {str_columns}) " \
               fr"VALUES ('{alert_tg_op}', '{timestamp}', '{user}', '{station}', '{alert_age}', {str_values})"
-    log_query.execute(sql_exp)
+    log_db_cursor.execute(sql_exp)
 
 
 def main():
     channel = 'logging'
-    global conn_sigm, sigm_query, conn_log, log_query
-    conn_sigm, sigm_query = sigm_conn(channel)
-    conn_log, log_query = log_conn()
+    global sigm_connection, sigm_db_cursor, log_connection, log_db_cursor
+    sigm_connection, sigm_db_cursor = sigm_connect(channel)
+    log_connection, log_db_cursor = log_connect()
 
     add_sql_files()
     # drop_inc_tables()
@@ -213,20 +212,20 @@ def main():
 
     while 1:
         try:
-            conn_sigm.poll()
+            sigm_connection.poll()
         except:
             print('Database cannot be accessed, PostgreSQL service probably rebooting')
             try:
-                conn_sigm.close()
-                conn_sigm, sigm_query = sigm_conn(channel)
-                conn_log.close()
-                conn_log, log_query = log_conn()
+                sigm_connection.close()
+                sigm_connection, sigm_db_cursor = sigm_connect(channel)
+                log_connection.close()
+                log_connection, log_db_cursor = log_connect()
             except:
                 pass
         else:
-            conn_sigm.commit()
-            while conn_sigm.notifies:
-                notify = conn_sigm.notifies.pop()
+            sigm_connection.commit()
+            while sigm_connection.notifies:
+                notify = sigm_connection.notifies.pop()
                 raw_payload = notify.payload
 
                 alert_table, alert_dict, timestamp, user, station, alert_age, alert_tg_op = payload_handler(raw_payload)

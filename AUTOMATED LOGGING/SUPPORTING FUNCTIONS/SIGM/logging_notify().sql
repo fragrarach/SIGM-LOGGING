@@ -271,6 +271,17 @@ THEN
             || tg_op || ', '
             || '[' || row_to_json(NEW) || ']'
         );
+ELSIF
+    tg_op = 'DELETE'
+THEN
+        old_payload := (
+            ''
+            || sigm_str || ', '
+            || 'OLD' || ', '
+            || tg_table_name || ', '
+            || tg_op || ', '
+            || '[' || row_to_json(OLD) || ']'
+        );
 END IF;
 
 IF old_payload <> '' THEN
