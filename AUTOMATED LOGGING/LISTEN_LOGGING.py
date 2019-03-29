@@ -31,39 +31,10 @@ SNAP_TABLES = ['bill_of_materials_mat',
                'contract_part_line']
 
 
-# Convert tabular query result to list (2D array)
-def tabular_data(result_set):
-    lines = []
-    for row in result_set:
-        line = []
-        for cell in row:
-            if type(cell) == str:
-                cell = cell.strip()
-            line.append(cell)
-        lines.append(line)
-    return lines
-
-
-# Convert scalar query result to singleton variable of any data type
-def scalar_data(result_set):
-    for row in result_set:
-        for cell in row:
-            if type(cell) == str:
-                cell = cell.strip()
-            return cell
-
-
-# Query production database
-def sigm_db_query(sql_exp):
-    sigm_db_cursor.execute(sql_exp)
-    result_set = sigm_db_cursor.fetchall()
-    return result_set
-
-
 # Call table_names() PL/PG function, pull all table names from public schema
 def table_names():
     sql_exp = f'SELECT * FROM table_names()'
-    result_set = sigm_db_query(sql_exp)
+    result_set = sql_query(sql_exp, sigm_db_cursor)
     tables = tabular_data(result_set)
     return tables
 
@@ -71,7 +42,7 @@ def table_names():
 # Call table_columns() PL/PG function, pull all column names/attribute names/attribute numbers of a table
 def table_columns(table):
     sql_exp = f'SELECT * FROM table_columns(\'{table}\')'
-    result_set = sigm_db_query(sql_exp)
+    result_set = sql_query(sql_exp, sigm_db_cursor)
     columns = tabular_data(result_set)
     return columns
 
