@@ -1,8 +1,7 @@
-import psycopg2.extensions
 import json
 import re
 import datetime
-from sigm import sigm_conn, log_conn, add_sql_files
+from sigm import *
 
 # PostgreSQL DB connection configs
 psycopg2.extensions.register_type(psycopg2.extensions.UNICODE)
@@ -15,70 +14,64 @@ INC_TABLES = [
     'part',
     'part_price',
     # 'part_supplier',
-    'invoicing'
-    # 'bill_of_materials_mat',
-    # 'part_kit',
-    # 'contract',
-    # 'contract_group_line',
-    # 'contract_part_line'
-    ]
+    'invoicing',
+    'bill_of_materials_mat',
+    'part_kit',
+    'contract',
+    'contract_group_line',
+    'contract_part_line'
+]
 
 # TODO : Implement snapshot logging
 # Snapshot log tables
-SNAP_TABLES = ['bill_of_materials_mat',
-               'part_kit',
-               'contract',
-               'contract_group_line',
-               'contract_part_line']
+SNAP_TABLES = [
+    'bill_of_materials_mat',
+    'part_kit',
+    'contract',
+    'contract_group_line',
+    'contract_part_line'
+]
 
+INC_COLUMNS = [
+    ['time_stamp', 'TIMESTAMP WITHOUT TIME ZONE'],
+    ['user_name', 'TEXT'],
+    ['station', 'TEXT'],
+    ['age', 'TEXT'],
+    ['tg_op', 'TEXT']
+]
 
-# Convert tabular query result to list (2D array)
-def tabular_data(result_set):
-    lines = []
-    for row in result_set:
-        line = []
-        for cell in row:
-            if type(cell) == str:
-                cell = cell.strip()
-            line.append(cell)
-        lines.append(line)
-    return lines
-
-
-# Convert scalar query result to singleton variable of any data type
-def scalar_data(result_set):
-    for row in result_set:
-        for cell in row:
-            if type(cell) == str:
-                cell = cell.strip()
-            return cell
-
-
-# Query production database
-def production_query(sql_exp):
-    sigm_query.execute(sql_exp)
-    result_set = sigm_query.fetchall()
-    return result_set
+SNAP_COLUMNS = [
+    ['time_stamp', 'TIMESTAMP WITHOUT TIME ZONE'],
+    ['user_name', 'TEXT'],
+    ['station', 'TEXT']
+]
 
 
 # Call table_names() PL/PG function, pull all table names from public schema
-def table_names():
+def table_names(cursor):
     sql_exp = f'SELECT * FROM table_names()'
-    result_set = production_query(sql_exp)
+    result_set = sql_query(sql_exp, cursor)
     tables = tabular_data(result_set)
     return tables
 
 
 # Call table_columns() PL/PG function, pull all column names/attribute names/attribute numbers of a table
-def table_columns(table):
+def table_columns(table, cursor):
     sql_exp = f'SELECT * FROM table_columns(\'{table}\')'
-    result_set = production_query(sql_exp)
+    result_set = sql_query(sql_exp, cursor)
     columns = tabular_data(result_set)
     return columns
 
 
+def whole_table(table_name, cursor):
+    sql_exp = f'SELECT * FROM {table_name}'
+    result_set = sql_query(sql_exp, cursor)
+    table = tabular_data(result_set)
+    return table
+
+
 # Add incremental log triggers to all tables in INC_TABLES list
-def add_inc_triggers():
+def add_triggers():
     for table in INC_TABLES:
         sql_exp = f'DROP TRIGGER IF EXISTS logging_notify ON {table}; ' \
                   f'CREATE TRIGGER logging_notify ' \
@@ -86,24 +79,24 @@ def add_inc_triggers():
                   f'    ON {table} ' \
                   f'    FOR EACH ROW ' \
                   f'    EXECUTE PROCEDURE logging_notify()'
-        sigm_query.execute(sql_exp)
+        sigm_db_cursor.execute(sql_exp)
         print(f'{table} log trigger added.')
 
 
 # Drop incremental log triggers from all tables in INC_TABLES list
-def drop_inc_triggers():
-    tables = table_names()
+def drop_triggers():
+    tables = table_names(sigm_db_cursor)
     for column in tables:
         for table in column:
             sql_exp = f'DROP TRIGGER IF EXISTS logging_notify on {table} CASCADE'
-            sigm_query.execute(sql_exp)
+            sigm_db_cursor.execute(sql_exp)
             print(f'{table} log trigger dropped.')
 
 
 # Create incremental log tables on LOG DB for every table in INC_TABLES list
-def add_inc_tables():
-    for table in INC_TABLES:
-        raw_columns = table_columns(table)
+def add_tables(table_list):
+    for table in table_list:
+        raw_columns = table_columns(table, sigm_db_cursor)
         columns = []
         for column in raw_columns:
             pair = []
@@ -113,30 +106,96 @@ def add_inc_tables():
             columns.append(str_pair)
         str_columns = ', '.join(columns)
 
+        if table_list == SNAP_TABLES:
+            table += '_snap'
+
         sql_exp = f'CREATE TABLE IF NOT EXISTS {table}(' \
-                  f'time_stamp      TIMESTAMP WITHOUT TIME ZONE,' \
-                  f'user_name       TEXT,' \
-                  f'station         TEXT,' \
-                  f'age             TEXT,' \
                   f'{str_columns})'
-        log_query.execute(sql_exp)
+        log_db_cursor.execute(sql_exp)
         print(f'{table} log table checked.')
 
-        try:
-            sql_exp = f'ALTER TABLE IF EXISTS {table} ' \
-                      f'ADD COLUMN tg_op TEXT;'
-            log_query.execute(sql_exp)
-            print(f'{table} new column(s) added.')
-        except:
-            print(f'{table} new column(s) already exist.')
+
+# Initialize snapshot logging tables.
+def init_snap_tables(table_list):
+    timestamp = datetime.datetime.now()
+    for table in table_list:
+        dest_table = table + '_snap'
+        if not whole_table(dest_table, log_db_cursor):
+            copy_table(table, dest_table, sigm_db_cursor, log_db_cursor)
+            sql_exp = f'UPDATE {dest_table} ' \
+                      f'SET time_stamp = \'{timestamp}\', ' \
+                      f'user_name = \'INIT\', ' \
+                      f'station = \'fileserver\''
+            log_db_cursor.execute(sql_exp)
 
 
-# Drop incremental log tables on LOG DB for every table in INC_TABLES list
-def drop_inc_tables():
-    for table in INC_TABLES:
+# Add columns to a table.
+def extend_tables(table_list, column_list, cursor):
+    for table in table_list:
+        if table_list == SNAP_TABLES:
+            table += '_snap'
+        for column_pair in column_list:
+            column = column_pair[0]
+            attribute = column_pair[1]
+            try:
+                sql_exp = f'ALTER TABLE IF EXISTS {table} ' \
+                          f'ADD COLUMN {column} {attribute};'
+                cursor.execute(sql_exp)
+                print(f'Added {column} column to {table} table.')
+            except:
+                print(f'{column} column already exists on {table} table.')
+
+
+# Drop tables in a list on a specific DB
+def drop_tables(table_list, cursor):
+    for table in table_list:
+        if table_list == SNAP_TABLES:
+            table = table + '_snap'
+
         sql_exp = f'DROP TABLE IF EXISTS {table} CASCADE'
-        log_query.execute(sql_exp)
+        cursor.execute(sql_exp)
         print(f'{table} log table dropped.')
+
+
+# Copy table from one DB to another
+def copy_table(source_table_name, dest_table_name, source_cursor, dest_cursor=None):
+    if dest_cursor is None:
+        dest_cursor = source_cursor
+
+    columns = table_columns(source_table_name, sigm_db_cursor)
+    column_names = []
+    for column in columns:
+        column_name = column[0]
+        column_names.append(column_name)
+    str_columns = ', '.join(column_names)
+
+    source_table = whole_table(source_table_name, sigm_db_cursor)
+    rows = len(source_table)
+
+    print(
+        f'Copying {rows} rows table {source_table_name} using {source_cursor} to {dest_table_name} using {dest_cursor}')
+
+    for row in source_table:
+        values = []
+        for value in row:
+            if value is None:
+                value = 'Null'
+            if type(value) == datetime.date:
+                value = str(value)
+            if type(value) != str:
+                value = str(value)
+            else:
+                if value != 'Null':
+                    if "'" in value:
+                        value = value.replace("'", "''")
+                    value = "'" + value + "'"
+            values.append(value)
+        str_values = ', '.join(values)
+
+        sql_exp = fr'INSERT INTO {dest_table_name} ({str_columns}) VALUES ({str_values})'
+        dest_cursor.execute(sql_exp)
+
+    print(f'Copying table {source_table_name} to {dest_table_name} complete.')
 
 
 # Split payload string, return named variables
@@ -184,7 +243,6 @@ def alert_handler(alert_dict):
             if value != 'Null':
                 if "'" in value:
                     value = value.replace("'", "''")
-                    print(value)
                 value = "'" + value + "'"
         values.append(value)
     str_values = ', '.join(values)
@@ -196,37 +254,45 @@ def alert_handler(alert_dict):
 def log_handler(alert_table, str_columns, timestamp, user, station, alert_age, alert_tg_op, str_values):
     sql_exp = fr"INSERT INTO {alert_table} (tg_op, time_stamp, user_name, station, age, {str_columns}) " \
               fr"VALUES ('{alert_tg_op}', '{timestamp}', '{user}', '{station}', '{alert_age}', {str_values})"
-    log_query.execute(sql_exp)
+    log_db_cursor.execute(sql_exp)
 
 
 def main():
     channel = 'logging'
-    global conn_sigm, sigm_query, conn_log, log_query
-    conn_sigm, sigm_query = sigm_conn(channel)
-    conn_log, log_query = log_conn()
+    global sigm_connection, sigm_db_cursor, log_connection, log_db_cursor
+    sigm_connection, sigm_db_cursor = sigm_connect(channel)
+    log_connection, log_db_cursor = log_connect()
 
     add_sql_files()
-    # drop_inc_tables()
-    # drop_inc_triggers()
-    add_inc_triggers()
-    add_inc_tables()
+
+    # drop_tables(INC_TABLES, log_db_cursor)
+    # drop_tables(SNAP_TABLES, log_db_cursor)
+    # drop_triggers()
+
+    add_triggers()
+    add_tables(INC_TABLES)
+    add_tables(SNAP_TABLES)
+    extend_tables(INC_TABLES, INC_COLUMNS, log_db_cursor)
+    extend_tables(SNAP_TABLES, SNAP_COLUMNS, log_db_cursor)
+
+    init_snap_tables(SNAP_TABLES)
 
     while 1:
         try:
-            conn_sigm.poll()
+            sigm_connection.poll()
         except:
             print('Database cannot be accessed, PostgreSQL service probably rebooting')
             try:
-                conn_sigm.close()
-                conn_sigm, sigm_query = sigm_conn(channel)
-                conn_log.close()
-                conn_log, log_query = log_conn()
+                sigm_connection.close()
+                sigm_connection, sigm_db_cursor = sigm_connect(channel)
+                log_connection.close()
+                log_connection, log_db_cursor = log_connect()
             except:
                 pass
         else:
-            conn_sigm.commit()
-            while conn_sigm.notifies:
-                notify = conn_sigm.notifies.pop()
+            sigm_connection.commit()
+            while sigm_connection.notifies:
+                notify = sigm_connection.notifies.pop()
                 raw_payload = notify.payload
 
                 alert_table, alert_dict, timestamp, user, station, alert_age, alert_tg_op = payload_handler(raw_payload)
