@@ -1,1 +1,0 @@
-CREATE TABLE audit_log.' || $1 || ' (user_name text, time_stamp TIMESTAMP WITHOUT TIME ZONE, query text, LIKE public.' || $1 || ')'; END $BODY$ LANGUAGE plpgsql
