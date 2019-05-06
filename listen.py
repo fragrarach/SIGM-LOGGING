@@ -91,3 +91,7 @@ def listen():
                 str_columns, str_values = alert_handler(alert_dict)
                 sql.write_inc_log(alert_table, str_columns, timestamp, user,
                                   station, alert_age, alert_tg_op, str_values)
+
+
+if __name__ == "__main__":
+    listen()

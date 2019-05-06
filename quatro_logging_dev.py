@@ -1,7 +1,7 @@
 from sigm import *
 import listen
 from sql import add_triggers, add_tables, extend_tables, init_snap_tables
-from tasks import start_snap_timer
+from tasks import start_timer
 from config import Config
 
 
@@ -19,7 +19,7 @@ def main():
     extend_tables(Config.SNAP_TABLES, Config.SNAP_COLUMNS, Config.LOG_DB_CURSOR)
 
     init_snap_tables()
-    start_snap_timer()
+    start_timer()
 
     listen.listen()
 

@@ -1,20 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c1656eff-2d7e-401c-8930-0c26a368f22e" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/../AUTO-FOLDERS/SALE AND PURCHASE ORDER FOLDERS/LISTEN_FOLDERS.py" beforeDir="false" afterPath="$PROJECT_DIR$/../AUTO-FOLDERS/SALE AND PURCHASE ORDER FOLDERS/LISTEN_FOLDERS.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../DAILY-ORDERS/DAILY ORDERS/VBA/DAILY ORDERS.xlsm" beforeDir="false" afterPath="$PROJECT_DIR$/../DAILY-ORDERS/DAILY ORDERS/VBA/DAILY ORDERS.xlsm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/SIGM-LOGGING.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/SIGM-LOGGING.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AUTOMATED LOGGING/LISTEN_LOGGING.py" beforeDir="false" afterPath="$PROJECT_DIR$/AUTOMATED LOGGING/LISTEN_LOGGING.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AUTOMATED LOGGING/LISTEN_LOGGING_DEV.py" beforeDir="false" afterPath="$PROJECT_DIR$/AUTOMATED LOGGING/LISTEN_LOGGING_DEV.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AUTOMATED LOGGING/SUPPORTING FUNCTIONS/ARCHIVE/logging_notify_dev().sql" beforeDir="false" afterPath="$PROJECT_DIR$/AUTOMATED LOGGING/SUPPORTING FUNCTIONS/ARCHIVE/logging_notify_dev().sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AUTOMATED LOGGING/SUPPORTING FUNCTIONS/add_inc_log_tg_funcs().sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/AUTOMATED LOGGING/SUPPORTING FUNCTIONS/logging_notify.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/AUTOMATED LOGGING/SUPPORTING FUNCTIONS/logging_notify_dev().sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/AUTOMATED LOGGING/SUPPORTING FUNCTIONS/table_primary_keys().sql" beforeDir="false" />
-    </list>
+    <list default="true" id="c1656eff-2d7e-401c-8930-0c26a368f22e" name="Default" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -26,20 +13,7 @@
     <favorites_list name="SIGM-LOGGING" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="LISTEN_LOGGING.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/AUTOMATED LOGGING/LISTEN_LOGGING.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="210">
-              <caret line="119" column="38" lean-forward="true" selection-start-line="119" selection-start-column="38" selection-end-line="119" selection-end-column="38" />
-              <folding>
-                <element signature="e#0#14#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
@@ -90,13 +64,8 @@
         <subPane>
           <expand>
             <path>
-              <item name="SIGM-LOGGING" type="b2602c69:ProjectViewProjectNode" />
-              <item name="SIGM-LOGGING" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="SIGM-LOGGING" type="b2602c69:ProjectViewProjectNode" />
-              <item name="SIGM-LOGGING" type="462c0819:PsiDirectoryNode" />
-              <item name="AUTOMATED LOGGING" type="462c0819:PsiDirectoryNode" />
+              <item name="quatro_logging" type="b2602c69:ProjectViewProjectNode" />
+              <item name="quatro_logging" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -291,7 +260,7 @@
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49891067" visible="true" weight="0.12750264" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49891067" visible="true" weight="0.22128557" />
       <window_info anchor="bottom" id="TODO" order="4" visible="true" weight="0.20697168" />
       <window_info anchor="bottom" id="Event Log" order="5" side_tool="true" weight="0.32943678" />
       <window_info anchor="bottom" id="Find" order="1" />
@@ -304,10 +273,10 @@
       <window_info id="Favorites" order="2" sideWeight="0.50108933" side_tool="true" weight="0.2618546" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="2" weight="0.25" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Cvs" order="2" weight="0.25" />
     </layout>
   </component>
   <component name="VcsContentAnnotationSettings">
@@ -321,50 +290,20 @@
     <option name="LAST_COMMIT_MESSAGE" value="Fixed wrong listen channel." />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/AUTOMATED LOGGING/LISTEN_LOGGING.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1955">
-          <caret line="123" selection-start-line="123" selection-end-line="132" selection-end-column="44" />
-          <folding>
-            <element signature="e#0#14#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/AUTOMATED LOGGING/LISTEN_LOGGING.py" />
     <entry file="file://$PROJECT_DIR$/../AUTO-LABELS/AUTOMATED LABEL GENERATION/LISTEN_LABELS.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="7446">
           <caret line="442" selection-start-line="442" selection-end-line="442" />
-          <folding>
-            <element signature="e#0#26#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/AUTOMATED LOGGING/LISTEN_LOGGING_DEV.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1836">
-          <caret line="116" lean-forward="true" selection-start-line="116" selection-end-line="116" />
-          <folding>
-            <element signature="e#0#14#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/AUTOMATED LOGGING/LISTEN_LOGGING.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3621">
-          <caret line="221" selection-start-line="221" selection-end-line="221" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/AUTOMATED LOGGING/LISTEN_LOGGING_DEV.py" />
+    <entry file="file://$PROJECT_DIR$/AUTOMATED LOGGING/LISTEN_LOGGING.py" />
     <entry file="file://$PROJECT_DIR$/../AUTO-LABELS/AUTOMATED LABEL GENERATION/LISTEN_LABELS.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="7446">
           <caret line="442" selection-start-line="442" selection-end-line="442" />
-          <folding>
-            <element signature="e#0#26#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -382,20 +321,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/AUTOMATED LOGGING/LISTEN_LOGGING.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3621">
-          <caret line="221" selection-start-line="221" selection-end-line="221" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/AUTOMATED LOGGING/LISTEN_LOGGING.py" />
     <entry file="file://$PROJECT_DIR$/../AUTO-LABELS/AUTOMATED LABEL GENERATION/LISTEN_LABELS.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="7446">
           <caret line="442" selection-start-line="442" selection-end-line="442" />
-          <folding>
-            <element signature="e#0#26#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -406,18 +336,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/AUTOMATED LOGGING/SUPPORTING FUNCTIONS/ARCHIVE/logging_notify_dev().sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="11" lean-forward="true" selection-start-line="11" selection-end-line="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../ORDER-ALERTS/ORDER ALERTS/SUPPORTING FUNCTIONS/order_alerts_notify().sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-8637" />
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/AUTOMATED LOGGING/SUPPORTING FUNCTIONS/ARCHIVE/logging_notify_dev().sql" />
+    <entry file="file://$PROJECT_DIR$/../ORDER-ALERTS/ORDER ALERTS/SUPPORTING FUNCTIONS/order_alerts_notify().sql" />
     <entry file="file://$PROJECT_DIR$/../ORDER-ALERTS/ORDER ALERTS/LISTEN_ALERTS_DEV.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="306">
@@ -426,12 +346,8 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../DAILY-ORDERS/DAILY ORDERS/LISTEN_DAILY_ORDERS_DEV.py" />
-    <entry file="file://$PROJECT_DIR$/../DAILY-ORDERS/DAILY ORDERS/SUPPORTING FUNCTIONS/daily_orders_entered.sql">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../DAILY-ORDERS/DAILY ORDERS/SUPPORTING FUNCTIONS/daily_orders_dev view.sql">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
+    <entry file="file://$PROJECT_DIR$/../DAILY-ORDERS/DAILY ORDERS/SUPPORTING FUNCTIONS/daily_orders_entered.sql" />
+    <entry file="file://$PROJECT_DIR$/../DAILY-ORDERS/DAILY ORDERS/SUPPORTING FUNCTIONS/daily_orders_dev view.sql" />
     <entry file="file://$PROJECT_DIR$/../AUTO-LABELS/AUTOMATED LABEL GENERATION/LISTEN_LABELS_DEV.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="646">
@@ -453,13 +369,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../AUTO-FOLDERS/SALE AND PURCHASE ORDER FOLDERS/LISTEN_FOLDERS_DEV.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="226">
-          <caret line="86" column="6" selection-start-line="86" selection-start-column="6" selection-end-line="86" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/../AUTO-FOLDERS/SALE AND PURCHASE ORDER FOLDERS/LISTEN_FOLDERS_DEV.py" />
     <entry file="file://$PROJECT_DIR$/../DAILY-ORDERS/DAILY ORDERS/AUTO_DAILY_ORDERS.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="442">
@@ -467,61 +377,20 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/AUTOMATED LOGGING/SUPPORTING FUNCTIONS/ARCHIVE/logging_notify.sql">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/AUTOMATED LOGGING/SUPPORTING FUNCTIONS/ARCHIVE/add_inc_log_tg_funcs().sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="11" column="4" lean-forward="true" selection-start-line="11" selection-start-column="4" selection-end-line="11" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/AUTOMATED LOGGING/SUPPORTING FUNCTIONS/table_names().sql">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/AUTOMATED LOGGING/SUPPORTING FUNCTIONS/table_columns().sql">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/AUTOMATED LOGGING/SUPPORTING FUNCTIONS/logging_notify().sql">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../AUTO-FOLDERS/SALE AND PURCHASE ORDER FOLDERS/LISTEN_FOLDERS.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="924">
-          <caret line="146" column="12" lean-forward="true" selection-start-line="146" selection-start-column="12" selection-end-line="146" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/AUTOMATED LOGGING/SUPPORTING FUNCTIONS/ARCHIVE/logging_notify.sql" />
+    <entry file="file://$PROJECT_DIR$/AUTOMATED LOGGING/SUPPORTING FUNCTIONS/ARCHIVE/add_inc_log_tg_funcs().sql" />
+    <entry file="file://$PROJECT_DIR$/AUTOMATED LOGGING/SUPPORTING FUNCTIONS/table_names().sql" />
+    <entry file="file://$PROJECT_DIR$/AUTOMATED LOGGING/SUPPORTING FUNCTIONS/table_columns().sql" />
+    <entry file="file://$PROJECT_DIR$/AUTOMATED LOGGING/SUPPORTING FUNCTIONS/logging_notify().sql" />
+    <entry file="file://$PROJECT_DIR$/../AUTO-FOLDERS/SALE AND PURCHASE ORDER FOLDERS/LISTEN_FOLDERS.py" />
     <entry file="file://$PROJECT_DIR$/../AUTO-LABELS/AUTOMATED LABEL GENERATION/LISTEN_LABELS.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="646">
           <caret line="442" selection-start-line="442" selection-end-line="442" />
-          <folding>
-            <element signature="e#0#26#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/AUTOMATED LOGGING/LISTEN_LOGGING_DEV.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="116" selection-start-line="116" selection-end-line="116" />
-          <folding>
-            <element signature="e#0#14#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/AUTOMATED LOGGING/LISTEN_LOGGING.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="119" column="38" lean-forward="true" selection-start-line="119" selection-start-column="38" selection-end-line="119" selection-end-column="38" />
-          <folding>
-            <element signature="e#0#14#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/AUTOMATED LOGGING/LISTEN_LOGGING_DEV.py" />
+    <entry file="file://$PROJECT_DIR$/AUTOMATED LOGGING/LISTEN_LOGGING.py" />
   </component>
 </project>
