@@ -1,6 +1,6 @@
 from sigm import *
 import listen
-from sql import add_triggers, add_tables, extend_tables, init_snap_tables
+from statements import add_triggers, add_tables, extend_tables, init_snap_tables
 from tasks import start_timer
 from config import Config
 

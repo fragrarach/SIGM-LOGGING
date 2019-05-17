@@ -1,7 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c1656eff-2d7e-401c-8930-0c26a368f22e" name="Default" comment="" />
+    <list default="true" id="c1656eff-2d7e-401c-8930-0c26a368f22e" name="Default" comment="">
+      <change afterPath="$PROJECT_DIR$/data.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/run.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/quatro/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/quatro/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/quatro/.idea/quatro.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/quatro/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/quatro/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/quatro/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/quatro/emailing.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/quatro/files.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/quatro/listen.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/quatro/scheduler.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/quatro/sql.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/quatro_logging.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/quatro_logging.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/listen.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/quatro_logging.py" beforeDir="false" afterPath="$PROJECT_DIR$/quatro_logging.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/quatro_logging_dev.py" beforeDir="false" afterPath="$PROJECT_DIR$/quatro_logging_dev.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sql.py" beforeDir="false" afterPath="$PROJECT_DIR$/statements.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tasks.py" beforeDir="false" afterPath="$PROJECT_DIR$/tasks.py" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -13,7 +37,80 @@
     <favorites_list name="SIGM-LOGGING" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
+    <splitter split-orientation="horizontal" split-proportion="0.53898937">
+      <split-first>
+        <leaf>
+          <file leaf-file-name="data.py" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/data.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="85">
+                  <caret line="5" column="46" lean-forward="true" selection-start-line="5" selection-start-column="46" selection-end-line="5" selection-end-column="46" />
+                  <folding>
+                    <element signature="e#0#9#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="statements.py" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/statements.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="-1603">
+                  <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="12" />
+                  <folding>
+                    <element signature="e#0#15#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="tasks.py" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/tasks.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="306">
+                  <caret line="18" column="60" selection-start-line="18" selection-start-column="60" selection-end-line="18" selection-end-column="60" />
+                  <folding>
+                    <element signature="e#0#15#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="config.py" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/config.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="408">
+                  <caret line="24" column="9" lean-forward="true" selection-start-line="24" selection-start-column="9" selection-end-line="24" selection-end-column="9" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-first>
+      <split-second>
+        <leaf>
+          <file leaf-file-name="quatro_logging_dev.py" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/quatro_logging_dev.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="153">
+                  <caret line="9" lean-forward="true" selection-start-line="9" selection-end-line="9" />
+                  <folding>
+                    <element signature="e#0#13#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-second>
+    </splitter>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
@@ -22,6 +119,9 @@
       <find>order_cli_name1</find>
       <find>alert_handler</find>
       <find>log</find>
+      <find>table_names</find>
+      <find>drop_triggers</find>
+      <find>copy_table</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -44,14 +144,21 @@
         <option value="$PROJECT_DIR$/AUTOMATED LOGGING/LISTEN_LOGGING.py" />
         <option value="$PROJECT_DIR$/../AUTO-FOLDERS/SALE AND PURCHASE ORDER FOLDERS/LISTEN_FOLDERS.py" />
         <option value="$PROJECT_DIR$/AUTOMATED LOGGING/LISTEN_LOGGING_DEV.py" />
+        <option value="$PROJECT_DIR$/data.py" />
+        <option value="$PROJECT_DIR$/listen.py" />
+        <option value="$PROJECT_DIR$/statements.py" />
+        <option value="$PROJECT_DIR$/tasks.py" />
+        <option value="$PROJECT_DIR$/scheduler.py" />
+        <option value="$PROJECT_DIR$/config.py" />
+        <option value="$PROJECT_DIR$/quatro_logging_dev.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-137" />
-    <option name="y" value="135" />
-    <option name="width" value="1342" />
-    <option name="height" value="1047" />
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
+    <option name="width" value="1936" />
+    <option name="height" value="1056" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -74,19 +181,20 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../ORDER-ALERTS" />
-    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../quatro_labels" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="H:\MACROS\AUTO-FOLDERS" />
-      <recent name="H:\MACROS\AUTO-LABELS\AUTOMATED LABEL GENERATION" />
-      <recent name="H:\MACROS\SIGM-LOGGING\AUTOMATED LOGGING" />
-      <recent name="H:\MACROS\DAILY-ORDERS\DAILY ORDERS" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="H:\MACROS\SIGM-LOGGING\AUTOMATED LOGGING\SUPPORTING FUNCTIONS\ARCHIVE" />
       <recent name="H:\MACROS\AUTO-FOLDERS\SALE AND PURCHASE ORDER FOLDERS" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="H:\MACROS\quatro_logging\venv\Lib\site-packages" />
+      <recent name="H:\MACROS\quatro_logging" />
+      <recent name="H:\MACROS\AUTO-FOLDERS" />
+      <recent name="H:\MACROS\AUTO-LABELS\AUTOMATED LABEL GENERATION" />
+      <recent name="H:\MACROS\SIGM-LOGGING\AUTOMATED LOGGING" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -101,7 +209,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Python.quatro_logging_dev">
     <configuration name="LISTEN_LOGGING_DEV" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="SIGM-LOGGING" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -115,6 +223,42 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/AUTOMATED LOGGING/LISTEN_LOGGING_DEV.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+    </configuration>
+    <configuration name="quatro_logging_dev" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="quatro_logging" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/quatro_logging_dev.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+    </configuration>
+    <configuration name="tasks" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="quatro_logging" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/tasks.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -201,8 +345,15 @@
       <option name="_new_target" value="&quot;&quot;" />
       <option name="_new_targetType" value="&quot;PATH&quot;" />
     </configuration>
+    <list>
+      <item itemvalue="Python.LISTEN_LOGGING_DEV" />
+      <item itemvalue="Python.quatro_logging_dev" />
+      <item itemvalue="Python.tasks" />
+    </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.quatro_logging_dev" />
+        <item itemvalue="Python.tasks" />
         <item itemvalue="Python.LISTEN_LOGGING_DEV" />
       </list>
     </recent_temporary>
@@ -260,16 +411,16 @@
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49891067" visible="true" weight="0.22128557" />
-      <window_info anchor="bottom" id="TODO" order="4" visible="true" weight="0.20697168" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49891067" visible="true" weight="0.14552239" />
+      <window_info anchor="bottom" id="TODO" order="4" weight="0.20697168" />
       <window_info anchor="bottom" id="Event Log" order="5" side_tool="true" weight="0.32943678" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="right" x="528" y="199" width="958" height="488" id="Run" order="3" weight="0.37899786" />
       <window_info anchor="bottom" id="Version Control" order="6" />
       <window_info anchor="bottom" id="Python Console" order="7" weight="0.32943678" />
       <window_info id="Structure" order="1" sideWeight="0.50108933" side_tool="true" weight="0.2618546" />
-      <window_info anchor="bottom" id="Terminal" order="8" weight="0.32943678" />
-      <window_info anchor="right" x="961" y="551" width="958" height="488" id="Debug" order="4" type="WINDOWED" weight="0.3966597" />
+      <window_info anchor="bottom" id="Terminal" order="8" visible="true" weight="0.19716775" />
+      <window_info anchor="right" x="2499" y="31" width="958" height="1008" id="Debug" order="4" type="WINDOWED" weight="0.3966597" />
       <window_info id="Favorites" order="2" sideWeight="0.50108933" side_tool="true" weight="0.2618546" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="3" weight="0.4" />
@@ -289,108 +440,151 @@
     <MESSAGE value="Fixed wrong listen channel." />
     <option name="LAST_COMMIT_MESSAGE" value="Fixed wrong listen channel." />
   </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <option name="time" value="27" />
+    </breakpoint-manager>
+    <watches-manager>
+      <configuration name="PythonConfigurationType">
+        <watch expression="config.TABLES['snap']" />
+        <watch expression="task" language="Python" />
+      </configuration>
+    </watches-manager>
+  </component>
+  <component name="debuggerHistoryManager">
+    <expressions id="watch">
+      <expression>
+        <expression-string>task</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+    </expressions>
+  </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/AUTOMATED LOGGING/LISTEN_LOGGING.py" />
-    <entry file="file://$PROJECT_DIR$/../AUTO-LABELS/AUTOMATED LABEL GENERATION/LISTEN_LABELS.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="7446">
-          <caret line="442" selection-start-line="442" selection-end-line="442" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/../AUTO-LABELS/AUTOMATED LABEL GENERATION/LISTEN_LABELS.py" />
     <entry file="file://$PROJECT_DIR$/AUTOMATED LOGGING/LISTEN_LOGGING_DEV.py" />
     <entry file="file://$PROJECT_DIR$/AUTOMATED LOGGING/LISTEN_LOGGING.py" />
-    <entry file="file://$PROJECT_DIR$/../AUTO-LABELS/AUTOMATED LABEL GENERATION/LISTEN_LABELS.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="7446">
-          <caret line="442" selection-start-line="442" selection-end-line="442" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../AUTO-LABELS/AUTOMATED LABEL GENERATION/LISTEN_LABELS_DEV.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="7208">
-          <caret line="428" column="33" selection-start-line="428" selection-start-column="33" selection-end-line="428" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../ORDER-ALERTS/ORDER ALERTS/LISTEN_ALERTS.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="13005">
-          <caret line="773" column="13" lean-forward="true" selection-start-line="773" selection-start-column="13" selection-end-line="773" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/../AUTO-LABELS/AUTOMATED LABEL GENERATION/LISTEN_LABELS.py" />
+    <entry file="file://$PROJECT_DIR$/../AUTO-LABELS/AUTOMATED LABEL GENERATION/LISTEN_LABELS_DEV.py" />
+    <entry file="file://$PROJECT_DIR$/../ORDER-ALERTS/ORDER ALERTS/LISTEN_ALERTS.py" />
     <entry file="file://$PROJECT_DIR$/AUTOMATED LOGGING/LISTEN_LOGGING.py" />
-    <entry file="file://$PROJECT_DIR$/../AUTO-LABELS/AUTOMATED LABEL GENERATION/LISTEN_LABELS.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="7446">
-          <caret line="442" selection-start-line="442" selection-end-line="442" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../AUTO-LABELS/AUTOMATED LABEL GENERATION/LISTEN_LABELS_DEV.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="7208">
-          <caret line="428" column="33" selection-start-line="428" selection-start-column="33" selection-end-line="428" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/../AUTO-LABELS/AUTOMATED LABEL GENERATION/LISTEN_LABELS.py" />
+    <entry file="file://$PROJECT_DIR$/../AUTO-LABELS/AUTOMATED LABEL GENERATION/LISTEN_LABELS_DEV.py" />
     <entry file="file://$PROJECT_DIR$/AUTOMATED LOGGING/SUPPORTING FUNCTIONS/ARCHIVE/logging_notify_dev().sql" />
     <entry file="file://$PROJECT_DIR$/../ORDER-ALERTS/ORDER ALERTS/SUPPORTING FUNCTIONS/order_alerts_notify().sql" />
-    <entry file="file://$PROJECT_DIR$/../ORDER-ALERTS/ORDER ALERTS/LISTEN_ALERTS_DEV.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="791" column="33" lean-forward="true" selection-start-line="791" selection-start-column="33" selection-end-line="791" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/../ORDER-ALERTS/ORDER ALERTS/LISTEN_ALERTS_DEV.py" />
     <entry file="file://$PROJECT_DIR$/../DAILY-ORDERS/DAILY ORDERS/LISTEN_DAILY_ORDERS_DEV.py" />
     <entry file="file://$PROJECT_DIR$/../DAILY-ORDERS/DAILY ORDERS/SUPPORTING FUNCTIONS/daily_orders_entered.sql" />
     <entry file="file://$PROJECT_DIR$/../DAILY-ORDERS/DAILY ORDERS/SUPPORTING FUNCTIONS/daily_orders_dev view.sql" />
-    <entry file="file://$PROJECT_DIR$/../AUTO-LABELS/AUTOMATED LABEL GENERATION/LISTEN_LABELS_DEV.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="646">
-          <caret line="428" column="33" selection-start-line="428" selection-start-column="33" selection-end-line="428" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../ORDER-ALERTS/ORDER ALERTS/LISTEN_ALERTS.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="445">
-          <caret line="773" column="13" selection-start-line="773" selection-start-column="13" selection-end-line="773" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../DAILY-ORDERS/DAILY ORDERS/LISTEN_DAILY_ORDERS.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2074">
-          <caret line="126" column="81" selection-start-line="126" selection-start-column="81" selection-end-line="126" selection-end-column="81" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/../AUTO-LABELS/AUTOMATED LABEL GENERATION/LISTEN_LABELS_DEV.py" />
+    <entry file="file://$PROJECT_DIR$/../ORDER-ALERTS/ORDER ALERTS/LISTEN_ALERTS.py" />
+    <entry file="file://$PROJECT_DIR$/../DAILY-ORDERS/DAILY ORDERS/LISTEN_DAILY_ORDERS.py" />
     <entry file="file://$PROJECT_DIR$/../AUTO-FOLDERS/SALE AND PURCHASE ORDER FOLDERS/LISTEN_FOLDERS_DEV.py" />
-    <entry file="file://$PROJECT_DIR$/../DAILY-ORDERS/DAILY ORDERS/AUTO_DAILY_ORDERS.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="442">
-          <caret line="170" column="20" lean-forward="true" selection-start-line="170" selection-start-column="20" selection-end-line="170" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/../DAILY-ORDERS/DAILY ORDERS/AUTO_DAILY_ORDERS.py" />
     <entry file="file://$PROJECT_DIR$/AUTOMATED LOGGING/SUPPORTING FUNCTIONS/ARCHIVE/logging_notify.sql" />
     <entry file="file://$PROJECT_DIR$/AUTOMATED LOGGING/SUPPORTING FUNCTIONS/ARCHIVE/add_inc_log_tg_funcs().sql" />
     <entry file="file://$PROJECT_DIR$/AUTOMATED LOGGING/SUPPORTING FUNCTIONS/table_names().sql" />
     <entry file="file://$PROJECT_DIR$/AUTOMATED LOGGING/SUPPORTING FUNCTIONS/table_columns().sql" />
     <entry file="file://$PROJECT_DIR$/AUTOMATED LOGGING/SUPPORTING FUNCTIONS/logging_notify().sql" />
     <entry file="file://$PROJECT_DIR$/../AUTO-FOLDERS/SALE AND PURCHASE ORDER FOLDERS/LISTEN_FOLDERS.py" />
-    <entry file="file://$PROJECT_DIR$/../AUTO-LABELS/AUTOMATED LABEL GENERATION/LISTEN_LABELS.py">
+    <entry file="file://$PROJECT_DIR$/../AUTO-LABELS/AUTOMATED LABEL GENERATION/LISTEN_LABELS.py" />
+    <entry file="file://$PROJECT_DIR$/AUTOMATED LOGGING/LISTEN_LOGGING_DEV.py" />
+    <entry file="file://$PROJECT_DIR$/AUTOMATED LOGGING/LISTEN_LOGGING.py" />
+    <entry file="file://$PROJECT_DIR$/listen.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="646">
-          <caret line="442" selection-start-line="442" selection-end-line="442" />
+        <state relative-caret-position="146">
+          <caret line="14" column="45" lean-forward="true" selection-start-line="14" selection-start-column="45" selection-end-line="14" selection-end-column="45" />
+          <folding>
+            <element signature="e#1#45#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/AUTOMATED LOGGING/LISTEN_LOGGING_DEV.py" />
-    <entry file="file://$PROJECT_DIR$/AUTOMATED LOGGING/LISTEN_LOGGING.py" />
+    <entry file="file://$PROJECT_DIR$/quatro_logging.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/pydevd.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="607">
+          <caret line="1663" selection-start-line="1663" selection-end-line="1663" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/quatro/listen.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/quatro/scheduler.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#27#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" column="46" lean-forward="true" selection-start-line="5" selection-start-column="46" selection-end-line="5" selection-end-column="46" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/statements.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1603">
+          <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="12" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tasks.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="18" column="60" selection-start-line="18" selection-start-column="60" selection-end-line="18" selection-end-column="60" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scheduler.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="59" lean-forward="true" selection-start-line="59" selection-end-line="59" />
+          <folding>
+            <element signature="e#0#27#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="24" column="9" lean-forward="true" selection-start-line="24" selection-start-column="9" selection-end-line="24" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/quatro_logging_dev.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="9" lean-forward="true" selection-start-line="9" selection-end-line="9" />
+          <folding>
+            <element signature="e#0#13#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
   </component>
 </project>

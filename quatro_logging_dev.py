@@ -1,27 +1,24 @@
-from sigm import *
-import listen
-from sql import add_triggers, add_tables, extend_tables, init_snap_tables
-from tasks import start_timer
-from config import Config
+import quatro
+import config
+from statements import add_triggers, add_tables, extend_tables, init_snap_tables
+from tasks import listen_task, scheduler_task
 
 
 def main():
-    add_sql_files()
+    logging_config = config.Config()
+    quatro.add_sql_files(logging_config)
 
-    # drop_tables(Config.INC_TABLES, Config.LOG_DB_CURSOR)
-    # drop_tables(Config.SNAP_TABLES, Config.LOG_DB_CURSOR)
-    # drop_triggers()
+    # drop_tables(logging_config)
+    # drop_triggers(logging_config)
 
-    add_triggers()
-    add_tables(Config.INC_TABLES)
-    add_tables(Config.SNAP_TABLES)
-    extend_tables(Config.INC_TABLES, Config.INC_COLUMNS, Config.LOG_DB_CURSOR)
-    extend_tables(Config.SNAP_TABLES, Config.SNAP_COLUMNS, Config.LOG_DB_CURSOR)
+    add_triggers(logging_config)
+    add_tables(logging_config)
+    extend_tables(logging_config)
 
-    init_snap_tables()
-    start_timer()
+    init_snap_tables(logging_config)
+    quatro.start_scheduler(logging_config, scheduler_task)
 
-    listen.listen()
+    quatro.listen(logging_config, listen_task)
 
 
 if __name__ == "__main__":

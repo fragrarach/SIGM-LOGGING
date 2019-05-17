@@ -2,10 +2,6 @@ import re
 import json
 import datetime
 
-from sigm import sigm_connect, log_connect
-from config import Config
-import sql
-
 
 # Split payload string, return named variables
 def payload_handler(payload):
@@ -66,32 +62,3 @@ def alert_handler(alert_dict):
     str_values = row_value_str(row)
 
     return str_columns, str_values
-
-
-def listen():
-    while 1:
-        try:
-            Config.SIGM_CONNECTION.poll()
-        except:
-            print('Database cannot be accessed, PostgreSQL service probably rebooting')
-            try:
-                Config.SIGM_CONNECTION.close()
-                Config.SIGM_CONNECTION, sigm_db_cursor = sigm_connect(Config.LISTEN_CHANNEL)
-                Config.LOG_CONNECTION.close()
-                Config.LOG_CONNECTION, Config.LOG_DB_CURSOR = log_connect()
-            except:
-                pass
-        else:
-            Config.SIGM_CONNECTION.commit()
-            while Config.SIGM_CONNECTION.notifies:
-                notify = Config.SIGM_CONNECTION.notifies.pop()
-                raw_payload = notify.payload
-
-                alert_table, alert_dict, timestamp, user, station, alert_age, alert_tg_op = payload_handler(raw_payload)
-                str_columns, str_values = alert_handler(alert_dict)
-                sql.write_inc_log(alert_table, str_columns, timestamp, user,
-                                  station, alert_age, alert_tg_op, str_values)
-
-
-if __name__ == "__main__":
-    listen()

@@ -1,8 +1,6 @@
 import datetime
-
-from config import Config
-from sigm import sql_query, tabular_data
-import listen
+from quatro import sql_query, tabular_data
+import data
 
 
 # Call table_names() PL/PG function, pull all table names from public schema
@@ -49,52 +47,53 @@ def column_name_str(table_name, cursor, include_attributes=False):
 
 
 # Add incremental log triggers to all tables in INC_TABLES list
-def add_triggers():
-    for table in Config.INC_TABLES:
+def add_triggers(config):
+    for table in config.TABLES['inc']:
         sql_exp = f'DROP TRIGGER IF EXISTS logging_notify ON {table}; ' \
                   f'CREATE TRIGGER logging_notify ' \
                   f'    AFTER UPDATE OR INSERT OR DELETE ' \
                   f'    ON {table} ' \
                   f'    FOR EACH ROW ' \
                   f'    EXECUTE PROCEDURE logging_notify()'
-        Config.SIGM_DB_CURSOR.execute(sql_exp)
+        config.sigm_db_cursor.execute(sql_exp)
         print(f'{table} log trigger added.')
 
 
 # Drop incremental log triggers from all tables in INC_TABLES list
-def drop_triggers():
-    tables = table_names(Config.SIGM_DB_CURSOR)
+def drop_triggers(config):
+    tables = table_names(config.sigm_db_cursor)
     for column in tables:
         for table in column:
             sql_exp = f'DROP TRIGGER IF EXISTS logging_notify on {table} CASCADE'
-            Config.SIGM_DB_CURSOR.execute(sql_exp)
+            config.sigm_db_cursor.execute(sql_exp)
             print(f'{table} log trigger dropped.')
 
 
 # Create incremental log tables on LOG DB for every table in INC_TABLES list
-def add_tables(table_list):
-    for table_name in table_list:
-        str_columns = column_name_str(table_name, Config.SIGM_DB_CURSOR, True)
+def add_tables(config):
+    for table_type, table_type_names in config.TABLES.items():
+        for table_name in table_type_names:
+            str_columns = column_name_str(table_name, config.sigm_db_cursor, True)
 
-        if table_list == Config.SNAP_TABLES:
-            table_name += '_snap'
+            if table_type == 'snap':
+                table_name += '_snap'
 
-        sql_exp = f'CREATE TABLE IF NOT EXISTS {table_name}(' \
-                  f'{str_columns})'
-        Config.LOG_DB_CURSOR.execute(sql_exp)
-        print(f'{table_name} log table checked.')
+            sql_exp = f'CREATE TABLE IF NOT EXISTS {table_name}(' \
+                      f'{str_columns})'
+            config.log_db_cursor.execute(sql_exp)
+            print(f'{table_name} log table checked.')
 
 
 # Initialize snapshot logging tables.
-def init_snap_tables():
+def init_snap_tables(config):
     timestamp = datetime.datetime.now()
-    for table_name in Config.SNAP_TABLES:
+    for table_name in config.TABLES['snap']:
         dest_table_name = table_name + '_snap'
-        if not whole_table(dest_table_name, Config.LOG_DB_CURSOR):
-            copy_table(table_name, dest_table_name, Config.SIGM_DB_CURSOR, Config.LOG_DB_CURSOR)
+        if not whole_table(dest_table_name, config.log_db_cursor):
+            copy_table(config, table_name, dest_table_name)
             sql_exp = f'UPDATE {dest_table_name} ' \
                       f'SET time_stamp = \'{timestamp}\''
-            Config.LOG_DB_CURSOR.execute(sql_exp)
+            config.log_db_cursor.execute(sql_exp)
 
 
 # Return appropriate column to use as reference when writing to snap log
@@ -113,78 +112,83 @@ def snap_log_ref(table_name):
     return ref_name
 
 
-def write_snap_log(table_name, ref_name, timestamp):
-    str_columns = column_name_str(table_name, Config.SIGM_DB_CURSOR)
+def write_snap_log(config, table_name, ref_name, timestamp):
+    str_columns = column_name_str(table_name, config.sigm_db_cursor)
 
     sql_exp = f'SELECT DISTINCT {ref_name} FROM {table_name} WHERE time_stamp::DATE = \'{timestamp}\'::DATE'
-    result_set = sql_query(sql_exp, Config.LOG_DB_CURSOR)
+    result_set = sql_query(sql_exp, config.log_db_cursor)
     ref_table = tabular_data(result_set)
     for ref_row in ref_table:
         ref = ref_row[0]
         sql_exp = f'SELECT * FROM {table_name} WHERE {ref_name} = {ref}'
-        result_set = sql_query(sql_exp, Config.SIGM_DB_CURSOR)
+        result_set = sql_query(sql_exp, config.sigm_db_cursor)
         table_data = tabular_data(result_set)
         rows = len(table_data)
         print(f'Writing {rows} rows to {table_name}_snap for {ref_name} {ref}')
         for row in table_data:
-            str_values = listen.row_value_str(row)
+            str_values = data.row_value_str(row)
             sql_exp = \
                 f'INSERT INTO {table_name}_snap ({str_columns}, time_stamp) ' \
                 f'VALUES ({str_values}, \'{timestamp}\')'
-            Config.LOG_DB_CURSOR.execute(sql_exp)
+            config.log_db_cursor.execute(sql_exp)
 
 
 # Add columns to a table.
-def extend_tables(table_list, column_list, cursor):
-    for table in table_list:
-        if table_list == Config.SNAP_TABLES:
-            table += '_snap'
-        for column_pair in column_list:
-            column = column_pair[0]
-            attribute = column_pair[1]
-            try:
-                sql_exp = f'ALTER TABLE IF EXISTS {table} ' \
-                          f'ADD COLUMN {column} {attribute};'
-                cursor.execute(sql_exp)
-                print(f'Added {column} column to {table} table.')
-            except:
-                print(f'{column} column already exists on {table} table.')
+def extend_tables(config):
+    for table_type, table_type_names in config.TABLES.items():
+        for table_name in table_type_names:
+            if table_type == 'snap':
+                table_name += '_snap'
+
+            for column_pair in config.COLUMNS[table_type]:
+                column = column_pair[0]
+                attribute = column_pair[1]
+                try:
+                    sql_exp = f'ALTER TABLE IF EXISTS {table_name} ' \
+                              f'ADD COLUMN {column} {attribute};'
+                    config.log_db_cursor.execute(sql_exp)
+                    print(f'Added {column} column to {table_name} table.')
+                except:
+                    print(f'{column} column already exists on {table_name} table.')
 
 
 # Drop tables in a list on a specific DB
-def drop_tables(table_list, cursor):
-    for table in table_list:
-        if table_list == Config.SNAP_TABLES:
-            table = table + '_snap'
+def drop_tables(config):
+    for table_type, table_type_names in config.TABLES.items():
+        for table_name in table_type_names:
+            if table_type == 'snap':
+                table_name = table_name + '_snap'
 
-        sql_exp = f'DROP TABLE IF EXISTS {table} CASCADE'
-        cursor.execute(sql_exp)
-        print(f'{table} log table dropped.')
+            sql_exp = f'DROP TABLE IF EXISTS {table_name} CASCADE'
+            config.log_db_cursor.execute(sql_exp)
+            print(f'{table_name} log table dropped.')
 
 
 # Copy table from one DB to another
-def copy_table(source_table_name, dest_table_name, source_cursor, dest_cursor=None):
-    if dest_cursor is None:
-        dest_cursor = source_cursor
+def copy_table(config, source_table_name, dest_table_name, source_db='log'):
+    if source_db == 'log':
+        source_cursor = config.log_db_cursor
+    elif source_db == 'sigm':
+        source_cursor = config.sigm_db_cursor
 
-    str_columns = column_name_str(source_table_name, Config.SIGM_DB_CURSOR)
-    source_table = whole_table(source_table_name, Config.SIGM_DB_CURSOR)
+    str_columns = column_name_str(source_table_name, config.sigm_db_cursor)
+    source_table = whole_table(source_table_name, config.sigm_db_cursor)
     rows = len(source_table)
 
-    print(
-        f'Copying {rows} rows table {source_table_name} using {source_cursor} to {dest_table_name} using {dest_cursor}')
+    print(f'Copying {rows} rows from table {source_table_name} '
+          f'using {source_cursor} to {dest_table_name} using {source_cursor}')
 
     for row in source_table:
-        str_values = listen.row_value_str(row)
+        str_values = data.row_value_str(row)
         sql_exp = fr'INSERT INTO {dest_table_name} ({str_columns}) VALUES ({str_values})'
-        dest_cursor.execute(sql_exp)
+        config.log_db_cursor.execute(sql_exp)
     print(f'Copying table {source_table_name} to {dest_table_name} complete.')
 
 
 # Checks inc table for records added today, gets ref_name if new increments exist
-def check_inc_table(table_name, timestamp):
+def check_inc_table(config, table_name, timestamp):
     sql_exp = f'SELECT * FROM {table_name} WHERE time_stamp::DATE = \'{timestamp}\'::DATE'
-    result_set = sql_query(sql_exp, Config.LOG_DB_CURSOR)
+    result_set = sql_query(sql_exp, config.log_db_cursor)
     table = tabular_data(result_set)
     if table:
         ref_name = snap_log_ref(table_name)
@@ -192,13 +196,8 @@ def check_inc_table(table_name, timestamp):
 
 
 # Insert named variables returned by payload handler and payload generated by alert_handler into log table
-def write_inc_log(alert_table, str_columns, timestamp, user, station, alert_age, alert_tg_op, str_values):
+def write_inc_log(config, alert_table, str_columns, timestamp, user, station, alert_age, alert_tg_op, str_values):
     sql_exp = fr"INSERT INTO {alert_table} (tg_op, time_stamp, user_name, station, age, {str_columns}) " \
               fr"VALUES ('{alert_tg_op}', '{timestamp}', '{user}', '{station}', '{alert_age}', {str_values})"
-    Config.LOG_DB_CURSOR.execute(sql_exp)
+    config.log_db_cursor.execute(sql_exp)
 
-
-if __name__ == "__main__":
-    init_snap_tables()
-    drop_triggers()
-    add_triggers()

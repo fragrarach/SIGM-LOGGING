@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/SIGM-LOGGING.iml" filepath="$PROJECT_DIR$/.idea/SIGM-LOGGING.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/quatro_logging.iml" filepath="$PROJECT_DIR$/.idea/quatro_logging.iml" />
     </modules>
   </component>
 </project>
