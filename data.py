@@ -27,6 +27,7 @@ def payload_handler(payload):
         print(log_message)
 
         return alert_table, alert_dict, timestamp, user, station, alert_age, alert_tg_op
+    return
 
 
 # Pass row, return comma separated string of values

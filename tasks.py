@@ -1,5 +1,4 @@
 import datetime
-import quatro
 from statements import write_snap_log, check_inc_table, write_inc_log
 import data
 
@@ -16,6 +15,7 @@ def scheduler_task(config):
 def listen_task(config, notify):
     raw_payload = notify.payload
 
-    alert_table, alert_dict, timestamp, user, station, alert_age, alert_tg_op = data.payload_handler(raw_payload)
-    str_columns, str_values = data.alert_handler(alert_dict)
-    write_inc_log(config, alert_table, str_columns, timestamp, user, station, alert_age, alert_tg_op, str_values)
+    if data.payload_handler(raw_payload):
+        alert_table, alert_dict, timestamp, user, station, alert_age, alert_tg_op = data.payload_handler(raw_payload)
+        str_columns, str_values = data.alert_handler(alert_dict)
+        write_inc_log(config, alert_table, str_columns, timestamp, user, station, alert_age, alert_tg_op, str_values)
