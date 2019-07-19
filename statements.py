@@ -1,5 +1,5 @@
 import datetime
-from quatro import sql_query, tabular_data
+from quatro import sql_query, tabular_data, log
 import data
 
 
@@ -56,7 +56,7 @@ def add_triggers(config):
                   f'    FOR EACH ROW ' \
                   f'    EXECUTE PROCEDURE logging_notify()'
         config.sigm_db_cursor.execute(sql_exp)
-        print(f'{table} log trigger added.')
+        log(f'{table} log trigger added.')
 
 
 # Drop incremental log triggers from all tables in INC_TABLES list
@@ -66,7 +66,7 @@ def drop_triggers(config):
         for table in column:
             sql_exp = f'DROP TRIGGER IF EXISTS logging_notify on {table} CASCADE'
             config.sigm_db_cursor.execute(sql_exp)
-            print(f'{table} log trigger dropped.')
+            log(f'{table} log trigger dropped.')
 
 
 # Create incremental log tables on LOG DB for every table in INC_TABLES list
@@ -81,7 +81,7 @@ def add_tables(config):
             sql_exp = f'CREATE TABLE IF NOT EXISTS {table_name}(' \
                       f'{str_columns})'
             config.log_db_cursor.execute(sql_exp)
-            print(f'{table_name} log table checked.')
+            log(f'{table_name} log table checked.')
 
 
 # Initialize snapshot logging tables.
@@ -124,7 +124,7 @@ def write_snap_log(config, table_name, ref_name, timestamp):
         result_set = sql_query(sql_exp, config.sigm_db_cursor)
         table_data = tabular_data(result_set)
         rows = len(table_data)
-        print(f'Writing {rows} rows to {table_name}_snap for {ref_name} {ref}')
+        log(f'Writing {rows} rows to {table_name}_snap for {ref_name} {ref}')
         for row in table_data:
             str_values = data.row_value_str(row)
             sql_exp = \
@@ -147,9 +147,9 @@ def extend_tables(config):
                     sql_exp = f'ALTER TABLE IF EXISTS {table_name} ' \
                               f'ADD COLUMN {column} {attribute};'
                     config.log_db_cursor.execute(sql_exp)
-                    print(f'Added {column} column to {table_name} table.')
+                    log(f'Added {column} column to {table_name} table.')
                 except:
-                    print(f'{column} column already exists on {table_name} table.')
+                    log(f'{column} column already exists on {table_name} table.')
 
 
 # Drop tables in a list on a specific DB
@@ -161,7 +161,7 @@ def drop_tables(config):
 
             sql_exp = f'DROP TABLE IF EXISTS {table_name} CASCADE'
             config.log_db_cursor.execute(sql_exp)
-            print(f'{table_name} log table dropped.')
+            log(f'{table_name} log table dropped.')
 
 
 # Copy table from one DB to another
@@ -175,14 +175,14 @@ def copy_table(config, source_table_name, dest_table_name, source_db='log'):
     source_table = whole_table(source_table_name, config.sigm_db_cursor)
     rows = len(source_table)
 
-    print(f'Copying {rows} rows from table {source_table_name} '
-          f'using {source_cursor} to {dest_table_name} using {source_cursor}')
+    log(f'Copying {rows} rows from table {source_table_name} '
+        f'using {source_cursor} to {dest_table_name} using {source_cursor}')
 
     for row in source_table:
         str_values = data.row_value_str(row)
         sql_exp = fr'INSERT INTO {dest_table_name} ({str_columns}) VALUES ({str_values})'
         config.log_db_cursor.execute(sql_exp)
-    print(f'Copying table {source_table_name} to {dest_table_name} complete.')
+    log(f'Copying table {source_table_name} to {dest_table_name} complete.')
 
 
 # Checks inc table for records added today, gets ref_name if new increments exist

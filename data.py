@@ -1,6 +1,7 @@
 import re
 import json
 import datetime
+from quatro import log
 
 
 # Split payload string, return named variables
@@ -24,7 +25,7 @@ def payload_handler(payload):
 
         timestamp = datetime.datetime.now()
         log_message = f'{alert_tg_op} {alert_age} {alert_table} by {user} on workstation {station} at {timestamp}\n'
-        print(log_message)
+        log(log_message)
 
         return alert_table, alert_dict, timestamp, user, station, alert_age, alert_tg_op
     return
