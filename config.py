@@ -6,13 +6,14 @@ class Config:
     def __init__(self, main_file_path):
         self.main_file_path = main_file_path
         self.parent_dir = dirname(abspath(main_file_path))
+        self.listen_channel = 'logging'
         self.sigm_connection = None
         self.sigm_db_cursor = None
         self.log_connection = None
         self.log_db_cursor = None
 
     def sql_connections(self):
-        self.sigm_connection, self.sigm_db_cursor = sigm_connect()
+        self.sigm_connection, self.sigm_db_cursor = sigm_connect(self.listen_channel)
         self.log_connection, self.log_db_cursor = log_connect()
 
     TABLES = {
@@ -27,7 +28,9 @@ class Config:
             'part_kit',
             'contract',
             'contract_group_line',
-            'contract_part_line'
+            'contract_part_line',
+            'purchase_order_line',
+            'purchase_order_header'
         ],
         'snap': [
             'bill_of_materials_mat',

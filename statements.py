@@ -138,7 +138,7 @@ def snap_log_ref(table_name):
 
 
 def write_snap_log(table_name, ref_name, timestamp):
-    str_columns = column_name_str(table_name, c.config.sigm_db_cursor)
+    str_columns = column_name_str(table_name)
 
     sql_exp = f'SELECT DISTINCT {ref_name} FROM {table_name} WHERE time_stamp::DATE = \'{timestamp}\'::DATE'
     result_set = sql_query(sql_exp, c.config.log_db_cursor)

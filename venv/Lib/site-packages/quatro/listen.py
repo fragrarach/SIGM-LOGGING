@@ -26,4 +26,4 @@ def listen(task, else_task=None):
             configuration.config.sigm_connection.commit()
             while configuration.config.sigm_connection.notifies:
                 notify = configuration.config.sigm_connection.notifies.pop()
-                task(configuration.config, notify)
+                task(notify)

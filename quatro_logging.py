@@ -1,4 +1,4 @@
-from quatro import init_app_log_dir, log, add_sql_files, start_scheduler, listen, configuration as c
+from quatro import init_app_log_dir, log, add_sql_files, start_scheduler, listen, configuration as c, sql_query
 from config import Config
 from statements import add_triggers, add_tables, extend_tables, init_snap_tables
 from tasks import listen_task, scheduler_task
